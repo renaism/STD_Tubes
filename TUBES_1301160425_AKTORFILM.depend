@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1487357208 source:d:\libraries\documents\codeblocks\tubes_1301160425_aktorfilm\main.cpp
+	<iostream>
+	"menu.h"
+	"menu.cpp"
+
+1487356243 d:\libraries\documents\codeblocks\tubes_1301160425_aktorfilm\menu.h
+	<vector>
+
+1487357633 d:\libraries\documents\codeblocks\tubes_1301160425_aktorfilm\menu.cpp
+	<conio.h>
+	<windows.h>
+
