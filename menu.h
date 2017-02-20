@@ -10,6 +10,7 @@
 #define KEY_ENTER '\r'
 
 typedef std::vector<std::string> menuOptions;
+typedef std::string align;
 
 struct Menu
 {
@@ -20,6 +21,13 @@ struct Menu
 Menu GenerateMenu(std::string title, menuOptions options);
 void ShowMenu(Menu M, int &sel);
 
+void DrawBorderVertical(int width);
+void DrawBorderTopLeft();
+void DrawBorderTopRight();
+void DrawBorderBottomLeft();
+void DrawBorderBottomRight();
+void DrawBorderHorizontal();
 
+void Cell(std::string text, int width, align alg, bool borderT, bool borderB, bool borderR, bool borderL);
 
 #endif // MENU_H_INCLUDED
