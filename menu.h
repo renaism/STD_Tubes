@@ -2,6 +2,10 @@
 #define MENU_H_INCLUDED
 
 #include <vector>
+#include <iostream>
+#include <conio.h>
+#include <string>
+#include <windows.h>
 
 #define KEY_UP 72
 #define KEY_DOWN 80

@@ -1,6 +1,18 @@
-#include <conio.h>
-#include <string>
-#include <windows.h>
+#include "menu.h"
+
+void CursorSetPos(int x, int y)
+{
+    COORD p = {x, y};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), p);
+}
+
+COORD CursorGetPos()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (!GetConsoleScreenBufferInfo(GetStdHandle( STD_OUTPUT_HANDLE ), &csbi))
+        return {-1. -1};
+    return csbi.dwCursorPosition;
+}
 
 Menu GenerateMenu(std::string title, menuOptions options)
 {
@@ -16,52 +28,56 @@ void ShowMenu(Menu M, int &sel)
     int key = 0;
     int length = M.options.size();
     sel = 0;
+    COORD cursorStartPos;
+
+    system("cls");
+    Cell(M.title, 50, "centre", true, true, true, true);
+    DrawBorderTopLeft();
+    DrawBorderVertical(50);
+    DrawBorderTopRight();
+    std::cout << '\n';
+    cursorStartPos = {4, CursorGetPos().Y};
+    for(int i = 0; i < length; i++)
+    {
+        std::string opt = "";
+        opt += "     ";
+        opt += std::to_string(i+1) + ". " + M.options[i];
+        Cell(opt, 50, "left", false, false, true, true);
+    }
+    DrawBorderBottomLeft();
+    DrawBorderVertical(50);
+    DrawBorderBottomRight();
+    std::cout << '\n';
+    COORD cursorEndPos = CursorGetPos();
+
     do
     {
-        system("cls");
-        Cell(M.title, 50, "centre", true, true, true, true);
-        DrawBorderTopLeft();
-        DrawBorderVertical(50);
-        DrawBorderTopRight();
-        std::cout << '\n';
-        for(int i = 0; i < length; i++)
-        {
-            std::string opt = "";
-            if(i == sel)
-            {
-                opt += "   > ";
-            }
-            else
-            {
-                opt += "     ";
-            }
-            opt += std::to_string(i+1) + ". " + M.options[i];
-            Cell(opt, 50, "left", false, false, true, true);
-        }
-        DrawBorderBottomLeft();
-        DrawBorderVertical(50);
-        DrawBorderBottomRight();
-        std::cout << '\n';
-
+        CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+        std::cout << ">";
+        CursorSetPos(cursorEndPos.X, cursorEndPos.Y);
         key = getch();
 
         if(key == KEY_UP)
         {
+            CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+            std::cout << " ";
             sel--;
             if(sel < 0)
             {
                 sel = length-1;
             }
+
         }
         else if(key == KEY_DOWN)
         {
+            CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+            std::cout << " ";
             sel++;
             if(sel > length-1)
             {
                 sel = 0;
             }
         }
-
     } while(key != KEY_ENTER);
 }
 

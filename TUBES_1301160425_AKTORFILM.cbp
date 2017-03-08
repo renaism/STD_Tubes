@@ -32,11 +32,27 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
-		<Unit filename="menu.cpp">
+		<Unit filename="actor.cpp" />
+		<Unit filename="actor.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="doublelist.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="film.cpp" />
+		<Unit filename="film.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="main.cpp" />
+		<Unit filename="menu.cpp" />
 		<Unit filename="menu.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="relation.cpp" />
+		<Unit filename="relation.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="singlecircularlist.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions>
