@@ -6,7 +6,7 @@
 
 struct infoFilm
 {
-    std::string name;
+    std::string title;
     int year;
 };
 

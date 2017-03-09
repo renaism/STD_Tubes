@@ -17,6 +17,11 @@ a_actor CreateActor(std::string name)
     return a;
 }
 
+void DaallocateActor(a_actor &a)
+{
+
+}
+
 a_actor FindLastActor(ListActor L)
 {
     if(L.first != NULL)
@@ -110,18 +115,18 @@ void InsertActor(ListActor &L, a_actor a)
         }
     }
 }
-void DeleteActor(ListActor &L, a_actor &a)
+void DeleteActor(ListActor &L, a_actor a)
 {
     /*
         I.S : 'a' must be an address of an element in list 'L'
     */
-    //Find previous address
     if(L.first == a)
     {
         L.first = a->next;
     }
     else
     {
+        //Find previous address in List
         a_actor prev = L.first;
         while((prev->next != a) && (prev->next != L.first))
         {
@@ -132,9 +137,7 @@ void DeleteActor(ListActor &L, a_actor &a)
             prev->next = a->next;
         }
     }
-
     a->next = NULL;
-    delete a;
 }
 
 void ShowAllActor(ListActor L)

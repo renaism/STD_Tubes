@@ -16,13 +16,18 @@ void DisplayDataMenu(ListActor LA, ListFilm LF, ListRelation LR);
 void CreateNewActor(ListActor &LA);
 void CreateNewFilm(ListFilm &LF);
 
+void SelectActorMenu(ListActor LA, a_actor &a);
+void SearchActor(ListActor LA, a_actor &a);
+
+void EditActorInfo(a_actor a);
+
 int main()
 {
     ListActor ListA = CreateListActor();
     ListFilm ListF = CreateListFilm();
     ListRelation ListR = CreateListRelation();
 
-    string title = "Main Menu";
+    string title = "Actor and Film Management\nMain Menu";
     string opT[] = {"Edit Actor Data", "Edit Film Data", "Display Data", "Exit"};
     int opSize = sizeof(opT) / sizeof(opT[0]);
     menuOptions options(opT, opT + sizeof(opT) / sizeof(opT[0]));
@@ -46,8 +51,6 @@ int main()
     } while(sel != opSize-1);
     cout << "Program exited." << endl;
     cin.get();
-
-
 
 //    ShowAllActor(ListA);
 //
@@ -104,6 +107,12 @@ void EditActorDataMenu(ListActor &LA)
         {
             CreateNewActor(LA);
         }
+        else if(sel == 1)
+        {
+            address a = NULL;
+            SelectActorMenu(LA, a);
+            if(a != )
+        }
     } while(sel != opSize-1);
 }
 
@@ -157,11 +166,15 @@ void DisplayDataMenu(ListActor LA, ListFilm LF, ListRelation LR)
 void CreateNewActor(ListActor &LA)
 {
     system("cls");
-    Cell("Create New Actor", 50, "centre", true, true, true, true);
-    cout << '\n';
+    Cell("Insert New Actor Info", 50, "centre", true, true, true, true);
+    COORD posInput = CursorGetPos();
+    Cell("   Name:\n", 50, "left", true, true, true, true);
+    COORD posEnd = CursorGetPos();
+
     string name;
-    cout << "Name: ";
+    CursorSetPos(posInput.X+4, posInput.Y+2);
     getline(cin, name);
+    CursorSetPos(posEnd.X, posEnd.Y);
     InsertActor(LA, CreateActor(name));
     cout << "\nCreate new actor success!! Press <ENTER> to go back.";
     cin.get();
@@ -170,18 +183,123 @@ void CreateNewActor(ListActor &LA)
 void CreateNewFilm(ListFilm &LF)
 {
     system("cls");
-    Cell("Create New Film", 50, "centre", true, true, true, true);
-    cout << '\n';
-    string name;
-    string yearStr;
+    Cell("Insert New Film Info", 50, "centre", true, true, true, true);
+    COORD posTitleInput = CursorGetPos();
+    Cell("   Title:\n\n", 50, "left", true, false, true, true);
+    COORD posYearInput = CursorGetPos();
+    Cell("   Year :\n", 50, "left", false, true, true, true);
+    COORD posEnd = CursorGetPos();
+
+    string title, yearStr;
     int year;
-    cout << "Name: ";
-    getline(cin, name);
-    cout << "Year: ";
+    CursorSetPos(posTitleInput.X+4, posTitleInput.Y+2);
+    getline(cin, title);
+    CursorSetPos(posYearInput.X+4, posYearInput.Y+1);
     getline(cin, yearStr);
+    CursorSetPos(posEnd.X, posEnd.Y);
     stringstream(yearStr) >> year;
-    InsertFilm(LF, CreateFilm(name, year));
+    InsertFilm(LF, CreateFilm(title, year));
     cout << "\nCreate new film success!! Press <ENTER> to go back.";
+    cin.get();
+}
+
+void SelectActorMenu(ListActor LA, a_actor &a)
+{
+    string title = "Select an Actor";
+    string opT[] = {"Search by Name", "Select From List", "Cancel"};
+    int opSize = sizeof(opT) / sizeof(opT[0]);
+    menuOptions options(opT, opT + sizeof(opT) / sizeof(opT[0]));
+    Menu mainMenu = GenerateMenu(title, options);
+    int sel = 0;
+    do
+    {
+        ShowMenu(mainMenu, sel);
+        if(sel == 0)
+        {
+            SearchActor(LA, a);
+        }
+    } while((sel != opSize-1) && (a == NULL));
+}
+
+void SearchActor(ListActor LA, a_actor &a)
+{
+    bool done = false;
+    while(!done)
+    {
+        system("cls");
+        Cell("Search Actor by Name", 50, "centre", true, true, true, true);
+        COORD posInput = CursorGetPos();
+        Cell("   Search:\n", 50, "left", true, true, true, true);
+
+        string searchName;
+        CursorSetPos(posInput.X+4, posInput.Y+2);
+        getline(cin, searchName);
+        CursorSetPos(posEnd.X, posEnd.Y);
+        a = FindActorByName(LA, searchName);
+
+        string title;
+        string opT[];
+        if(a != NULL)
+        {
+            title = '"' + searchName + "\" found!";
+            opT[] = {"Continue"};
+            done = true;
+        }
+        else
+        {
+            title = '"' + searchName + "\" couldn't be found!";
+            opT[] = {"Search Again", "Cancel"};
+        }
+        int opSize = sizeof(opT) / sizeof(opT[0]);
+        menuOptions options(opT, opT + sizeof(opT) / sizeof(opT[0]));
+        Menu mainMenu = GenerateMenu(title, options);
+        int sel = 0;
+        do
+        {
+            ShowMenu(mainMenu, sel);
+            if((sel == 1) && (!done))
+            {
+                done = true;
+            }
+        } while(sel != opSize-1);
+    }
+}
+
+void EditActorMenu(ListActor &LA, ListRelation &LR, ListFilm LF, a_actor &a)
+{
+    string title = "Edit Actor Data\n[" + a->info.name + ']';
+    string opT[] = {"Edit Name", "Add Role", "Edit Role", "Delete Actor", "Back"};
+    int opSize = sizeof(opT) / sizeof(opT[0]);
+    menuOptions options(opT, opT + sizeof(opT) / sizeof(opT[0]));
+    Menu mainMenu = GenerateMenu(title, options);
+    int sel = 0;
+    do
+    {
+        ShowMenu(mainMenu, sel);
+        if(sel == 0)
+        {
+            EditActorInfo(a);
+        }
+    } while(sel != opSize-1);
+}
+
+void EditActorInfo(ListActor &LA, a_actor a)
+{
+    system("cls");
+    string title = "Edit Actor Name\n[" + a->info.name + ']';
+    Cell(title, 50, "centre", true, true, true, true);
+    COORD posInput = CursorGetPos();
+    Cell("   Name:\n", 50, "left", true, false, true, true);
+    COORD posEnd = CursorGetPos();
+
+    string name;
+    CursorSetPos(posInput.X+4, posInput.Y+2);
+    getline(cin, name);
+    CursorSetPos(posEnd.X, posEnd.Y);
+    DeleteActor(LA, a);
+    a->info.name = name;
+    InsertActor(LA, a);
+    cout << "\nEdit actor info successful!! Press <ENTER> to go back.";
     cin.get();
 }
 

@@ -26,10 +26,11 @@ struct ListActor
 
 ListActor CreateListActor();
 a_actor CreateActor(std::string name);
+void DaallocateActor(a_actor &a)
 a_actor FindActorByName(ListActor L, std::string name);
 
 void InsertActor(ListActor &L, a_actor a);
-void DeleteActor(ListActor &L, a_actor &a);
+void DeleteActor(ListActor &L, a_actor a);
 void ShowAllActor(ListActor L);
 
 #endif // ACTOR_H_INCLUDED

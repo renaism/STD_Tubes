@@ -71,7 +71,7 @@ void ShowAllRelation(ListRelation L)
             std::string str = std::to_string(i) + ". " +
                     (a->info.r_actor)->info.name + " as " +
                     a->info.role + " in " +
-                    (a->info.r_film)->info.name +
+                    (a->info.r_film)->info.title +
                     " (" + std::to_string((a->info.r_film)->info.year) + ")";
             Cell(str, 100, "left", false, false, true, true);
 

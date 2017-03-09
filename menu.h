@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <conio.h>
 #include <string>
 #include <windows.h>
@@ -21,6 +22,9 @@ struct Menu
     std::string title;
     menuOptions options;
 };
+
+void CursorSetPos(int x, int y);
+COORD CursorGetPos();
 
 Menu GenerateMenu(std::string title, menuOptions options);
 void ShowMenu(Menu M, int &sel);

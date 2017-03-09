@@ -28,7 +28,6 @@ void ShowMenu(Menu M, int &sel)
     int key = 0;
     int length = M.options.size();
     sel = 0;
-    COORD cursorStartPos;
 
     system("cls");
     Cell(M.title, 50, "centre", true, true, true, true);
@@ -36,7 +35,7 @@ void ShowMenu(Menu M, int &sel)
     DrawBorderVertical(50);
     DrawBorderTopRight();
     std::cout << '\n';
-    cursorStartPos = {4, CursorGetPos().Y};
+    COORD cursorStartPos = {4, CursorGetPos().Y};
     for(int i = 0; i < length; i++)
     {
         std::string opt = "";
@@ -129,65 +128,72 @@ void Cell(std::string text, int width, align alg, bool borderT, bool borderB, bo
         }
         std::cout << '\n';
     }
-    if(borderL)
-    {
-        DrawBorderHorizontal();
-    }
 
-    int length = text.length();
-    int used = 0;
-
-    if(alg == "centre")
+    std::stringstream textStream(text);
+    while(textStream.good())
     {
-        if(length <= width)
+        std::string txtLine;
+        std::getline(textStream, txtLine, '\n');
+        if(borderL)
         {
-            int x = (int) (width - length) / 2;
-            for(int i = 0; i < x; i++)
+            DrawBorderHorizontal();
+        }
+
+        int length = txtLine.length();
+        int used = 0;
+
+        if(alg == "centre")
+        {
+            if(length <= width)
             {
-                std::cout << " ";
-                used++;
+                int x = (int) (width - length) / 2;
+                for(int i = 0; i < x; i++)
+                {
+                    std::cout << " ";
+                    used++;
+                }
             }
         }
-    }
 
-    else if(alg == "right")
-    {
-        if(length <= width)
+        else if(alg == "right")
         {
-            int x = width - length;
-            for(int i = 0; i < x; i++)
+            if(length <= width)
             {
-                std::cout << " ";
-                used++;
+                int x = width - length;
+                for(int i = 0; i < x; i++)
+                {
+                    std::cout << " ";
+                    used++;
+                }
             }
         }
-    }
 
-    int x = width - used;
-    for(int i = 0; i < x; i++)
-    {
-        if(i < length)
+        int x = width - used;
+        for(int i = 0; i < x; i++)
         {
-            if((length > x) && (i > x-2))
+            if(i < length)
             {
-                std::cout << ".";
+                if((length > x) && (i > x-2))
+                {
+                    std::cout << ".";
+                }
+                else
+                {
+                    std::cout << txtLine[i];
+                }
             }
             else
             {
-                std::cout << text[i];
+                std::cout << " ";
             }
         }
-        else
-        {
-            std::cout << " ";
-        }
-    }
 
-    if(borderR)
-    {
-        DrawBorderHorizontal();
+        if(borderR)
+        {
+            DrawBorderHorizontal();
+        }
+        std::cout << '\n';
     }
-    std::cout << '\n';
 
     if(borderB)
     {

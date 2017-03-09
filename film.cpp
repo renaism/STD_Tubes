@@ -12,7 +12,7 @@ ListFilm CreateListFilm()
 a_film CreateFilm(std::string name, int year)
 {
     a_film a = new Film;
-    a->info.name = name;
+    a->info.title = name;
     a->info.year = year;
     a->next = NULL;
     a->prev = NULL;
@@ -25,11 +25,11 @@ a_film FindFilmByName(ListFilm L, std::string name)
     if(L.first != NULL)
     {
         a_film a = L.first;
-        while((a->info.name != name) && (a != L.last))
+        while((a->info.title != name) && (a != L.last))
         {
             a = a->next;
         }
-        if(a->info.name == name)
+        if(a->info.title == name)
         {
             return a;
         }
@@ -105,7 +105,7 @@ void ShowAllFilm(ListFilm L)
         while(a != NULL)
         {
             std::string str = std::to_string(i) + ". " +
-            a->info.name + " (" + std::to_string(a->info.year) + ")";
+            a->info.title + " (" + std::to_string(a->info.year) + ")";
             Cell(str, 50, "left", false, false, true, true);
 
             a = a->next;
