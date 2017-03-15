@@ -29,9 +29,17 @@ struct ListRelation
 
 ListRelation CreateListRelation();
 a_relation CreateRelation(a_actor r_a, a_film r_f, std::string role);
+void DeallocateRelation(a_relation &a);
 
 void InsertRelation(ListRelation &L, a_relation a);
 void DeleteRelation(ListRelation &L, a_relation a);
-void ShowAllRelation(ListRelation L);
+
+std::vector<a_relation> GetAllRelationWithActor(ListRelation L, a_actor aA);
+std::vector<a_relation> GetAllRelationWithFilm(ListRelation L, a_film aF);
+
+void DeleteAllRelationWithActor(ListRelation &L, a_actor aA);
+void DeleteAllRelationWithFilm(ListRelation &sL, a_film aF);
+
+void ShowAllRelation(ListRelation L, bool selectable = false);
 
 #endif // RELATION_H_INCLUDED

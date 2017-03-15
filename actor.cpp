@@ -17,9 +17,10 @@ a_actor CreateActor(std::string name)
     return a;
 }
 
-void DaallocateActor(a_actor &a)
+void DeallocateActor(a_actor &a)
 {
-
+    delete a;
+    a = NULL;
 }
 
 a_actor FindLastActor(ListActor L)
@@ -40,28 +41,27 @@ a_actor FindLastActor(ListActor L)
     }
 }
 
-a_actor FindActorByName(ListActor L, std::string name)
+a_actor FindActorByName(ListActor L, std::string nameSearch)
 {
     if(L.first != NULL)
     {
+        for (char &c: nameSearch) c = std::toupper(c);
         a_actor a = L.first;
-        while((a->info.name != name) && (a->next != L.first))
+        do
         {
-            a = a->next;
-        }
-        if(a->info.name == name)
-        {
-            return a;
-        }
-        else
-        {
-            return NULL;
-        }
+            std::string name = a->info.name;
+            for (char &c: name) c = std::toupper(c);
+            if(nameSearch == name)
+            {
+                return a;
+            }
+            else
+            {
+                a = a->next;
+            }
+        } while(a != L.first);
     }
-    else
-    {
-        return NULL;
-    }
+    return NULL;
 }
 
 void InsertActor(ListActor &L, a_actor a)
@@ -122,7 +122,15 @@ void DeleteActor(ListActor &L, a_actor a)
     */
     if(L.first == a)
     {
-        L.first = a->next;
+        if(L.first->next == L.first)
+        {
+            L.first = NULL;
+        }
+        else
+        {
+            FindLastActor(L)->next = a->next;
+            L.first = a->next;
+        }
     }
     else
     {
@@ -140,31 +148,20 @@ void DeleteActor(ListActor &L, a_actor a)
     a->next = NULL;
 }
 
-void ShowAllActor(ListActor L)
+std::vector<a_actor> GetAllActorAddress(ListActor L)
 {
+    std::vector<a_actor> aT;
     if(L.first != NULL)
     {
-        DrawBorderTopLeft();
-        DrawBorderVertical(50);
-        DrawBorderTopRight();
-        std::cout << '\n';
         a_actor a = L.first;
-        int i = 1;
         do
         {
-            std::string str = std::to_string(i) + ". " + a->info.name;
-            Cell(str, 50, "left", false, false, true, true);
-
+            aT.push_back(a);
             a = a->next;
-            i++;
         } while(a != L.first);
-        DrawBorderBottomLeft();
-        DrawBorderVertical(50);
-        DrawBorderBottomRight();
-        std::cout << '\n';
+
+        return aT;
     }
-    else
-    {
-        Cell("Data of actors is empty!", 50, "left", true, true, true, true);
-    }
+
+    return aT;
 }

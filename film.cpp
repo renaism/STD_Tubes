@@ -20,28 +20,33 @@ a_film CreateFilm(std::string name, int year)
     return a;
 }
 
-a_film FindFilmByName(ListFilm L, std::string name)
+void DeallocateFilm(a_film &a)
+{
+    delete a;
+    a = NULL;
+}
+
+a_film FindFilmByTitle(ListFilm L, std::string titleSearch)
 {
     if(L.first != NULL)
     {
+        for (char &c: titleSearch) c = std::toupper(c);
         a_film a = L.first;
-        while((a->info.title != name) && (a != L.last))
+        do
         {
-            a = a->next;
-        }
-        if(a->info.title == name)
-        {
-            return a;
-        }
-        else
-        {
-            return NULL;
-        }
+            std::string title = a->info.title;
+            for (char &c: title) c = std::toupper(c);
+            if(titleSearch == title)
+            {
+                return a;
+            }
+            else
+            {
+                a = a->next;
+            }
+        } while(a != NULL);
     }
-    else
-    {
-        return NULL;
-    }
+    return NULL;
 }
 
 void InsertFilm(ListFilm &L, a_film a)
@@ -89,36 +94,21 @@ void DeleteFilm(ListFilm &L, a_film a)
 
     a->next = NULL;
     a->prev = NULL;
-    delete a;
 }
 
-void ShowAllFilm(ListFilm L)
+std::vector<a_film> GetAllFilmAddress(ListFilm L)
 {
+    std::vector<a_film> aT;
     if(L.first != NULL)
     {
-        DrawBorderTopLeft();
-        DrawBorderVertical(50);
-        DrawBorderTopRight();
-        std::cout << '\n';
         a_film a = L.first;
-        int i = 1;
-        while(a != NULL)
+        while (a != NULL)
         {
-            std::string str = std::to_string(i) + ". " +
-            a->info.title + " (" + std::to_string(a->info.year) + ")";
-            Cell(str, 50, "left", false, false, true, true);
-
+            aT.push_back(a);
             a = a->next;
-            i++;
         }
-        DrawBorderBottomLeft();
-        DrawBorderVertical(50);
-        DrawBorderBottomRight();
-        std::cout << '\n';
+        return aT;
     }
-    else
-    {
-        Cell("Data of films is empty!", 50, "left", true, true, true, true);
-    }
-}
 
+    return aT;
+}

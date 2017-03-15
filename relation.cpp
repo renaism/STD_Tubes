@@ -21,6 +21,12 @@ a_relation CreateRelation(a_actor r_a, a_film r_f, std::string role)
     return a;
 }
 
+void DeallocateRelation(a_relation &a)
+{
+    delete a;
+    a = NULL;
+}
+
 void InsertRelation(ListRelation &L, a_relation a)
 {
     if(L.first == NULL)
@@ -57,27 +63,87 @@ void DeleteRelation(ListRelation &L, a_relation a)
 
     a->next = NULL;
     a->prev = NULL;
-    delete a;
 }
 
-void ShowAllRelation(ListRelation L)
+std::vector<a_relation> GetAllRelationWithActor(ListRelation L, a_actor aA)
+{
+    std::vector<a_relation> relations;
+    if(L.first != NULL && aA != NULL)
+    {
+        a_relation aR = L.first;
+        while(aR != NULL)
+        {
+            if(aR->info.r_actor == aA)
+            {
+                relations.push_back(aR);
+            }
+            aR = aR->next;
+        }
+    }
+
+    return relations;
+}
+
+std::vector<a_relation> GetAllRelationWithFilm(ListRelation L, a_film aF)
+{
+    std::vector<a_relation> relations;
+    if(L.first != NULL && aF != NULL)
+    {
+        a_relation aR = L.first;
+        while(aR != NULL)
+        {
+            if(aR->info.r_film == aF)
+            {
+                relations.push_back(aR);
+            }
+            aR = aR->next;
+        }
+    }
+
+    return relations;
+}
+
+void DeleteAllRelationWithActor(ListRelation &L, a_actor aA)
+{
+    std::vector<a_relation> relations = GetAllRelationWithActor(L, aA);
+    for(a_relation &a: relations)
+    {
+        DeleteRelation(L, a);
+        DeallocateRelation(a);
+    }
+}
+
+void DeleteAllRelationWithFilm(ListRelation &L, a_film aF)
+{
+    std::vector<a_relation> relations = GetAllRelationWithFilm(L, aF);
+    for(a_relation &a: relations)
+    {
+        DeleteRelation(L, a);
+        DeallocateRelation(a);
+    }
+}
+
+void ShowAllRelation(ListRelation L, bool selectable)
 {
     if(L.first != NULL)
     {
         a_relation a = L.first;
         int i = 1;
+        std::vector<std::string> opT;
         while(a != NULL)
         {
             std::string str = std::to_string(i) + ". " +
-                    (a->info.r_actor)->info.name + " as " +
-                    a->info.role + " in " +
-                    (a->info.r_film)->info.title +
-                    " (" + std::to_string((a->info.r_film)->info.year) + ")";
-            Cell(str, 100, "left", false, false, true, true);
-
+                        (a->info.r_actor)->info.name + " as " +
+                        a->info.role + " in " +
+                        (a->info.r_film)->info.title +
+                        " (" + std::to_string((a->info.r_film)->info.year) + ")";
+            opT.push_back(str);
             a = a->next;
             i++;
         }
+        Menu M = GenerateMenu("All Relations", opT);
+        int sel = 0;
+        ShowMenu(M, sel);
     }
     else
     {
