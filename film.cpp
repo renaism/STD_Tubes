@@ -9,10 +9,10 @@ ListFilm CreateListFilm()
     return L;
 }
 
-a_film CreateFilm(std::string name, int year)
+a_film CreateFilm(std::string title, int year)
 {
     a_film a = new Film;
-    a->info.title = name;
+    a->info.title = title;
     a->info.year = year;
     a->next = NULL;
     a->prev = NULL;
@@ -107,7 +107,28 @@ std::vector<a_film> GetAllFilmAddress(ListFilm L)
             aT.push_back(a);
             a = a->next;
         }
-        return aT;
+    }
+
+    return aT;
+}
+
+std::vector<a_film> GetAllFilmWithStr(ListFilm L, std::string str)
+{
+    std::vector<a_film> aT;
+    if(L.first != NULL)
+    {
+        for(char &c: str) c = std::toupper(c);
+        a_film a = L.first;
+        while(a != NULL)
+        {
+            std::string title = a->info.title;
+            for(char &c: title) c = std::toupper(c);
+            if(title.find(str) != std::string::npos)
+            {
+                aT.push_back(a);
+            }
+            a = a->next;
+        }
     }
 
     return aT;

@@ -29,7 +29,7 @@ COORD CursorGetPos();
 
 Menu GenerateMenu(std::string title, const std::vector<std::string> &opT);
 Menu ConfirmationDialogue(std::string info);
-void ShowMenu(Menu M, int &sel, bool hasReturn = true);
+void ShowMenu(Menu M, int &sel, bool separateReturn = true);
 void ShowMessage(std::string info);
 void InputField(Menu M, std::string &input);
 

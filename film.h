@@ -28,7 +28,7 @@ struct ListFilm
 };
 
 ListFilm CreateListFilm();
-a_film CreateFilm(std::string name, int year);
+a_film CreateFilm(std::string title, int year);
 void DeallocateFilm(a_film &a);
 a_film FindFilmByTitle(ListFilm L, std::string name);
 
@@ -36,5 +36,6 @@ void InsertFilm(ListFilm &L, a_film a);
 void DeleteFilm(ListFilm &L, a_film a);
 
 std::vector<a_film> GetAllFilmAddress(ListFilm L);
+std::vector<a_film> GetAllFilmWithStr(ListFilm L, std::string str);
 
 #endif // FILM_H_INCLUDED

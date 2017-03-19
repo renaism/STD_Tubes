@@ -65,6 +65,22 @@ void DeleteRelation(ListRelation &L, a_relation a)
     a->prev = NULL;
 }
 
+std::vector<a_relation> GetAllRelationAddress(ListRelation L)
+{
+    std::vector<a_relation> aT;
+    if(L.first != NULL)
+    {
+        a_relation a = L.first;
+        while(a != NULL)
+        {
+            aT.push_back(a);
+            a = a->next;
+        }
+    }
+
+    return aT;
+}
+
 std::vector<a_relation> GetAllRelationWithActor(ListRelation L, a_actor aA)
 {
     std::vector<a_relation> relations;
@@ -101,6 +117,38 @@ std::vector<a_relation> GetAllRelationWithFilm(ListRelation L, a_film aF)
     }
 
     return relations;
+}
+
+int TotalRelationOfActor(ListRelation L, a_actor aA)
+{
+    int n = 0;
+    a_relation aR = L.first;
+    while(aR != NULL)
+    {
+        if(aR->info.r_actor == aA)
+        {
+            n++;
+        }
+        aR = aR->next;
+    }
+
+    return n;
+}
+
+int TotalRelationOfFilm(ListRelation L, a_film aF)
+{
+    int n = 0;
+    a_relation aR = L.first;
+    while(aR != NULL)
+    {
+        if(aR->info.r_film == aF)
+        {
+            n++;
+        }
+        aR = aR->next;
+    }
+
+    return n;
 }
 
 void DeleteAllRelationWithActor(ListRelation &L, a_actor aA)

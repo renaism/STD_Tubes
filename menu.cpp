@@ -37,8 +37,12 @@ Menu ConfirmationDialogue(std::string info)
     return M;
 }
 
-void ShowMenu(Menu M, int &sel, bool hasReturn)
+void ShowMenu(Menu M, int &sel, bool separateReturn)
 {
+    if(M.opReturn == 0)
+    {
+        separateReturn = false;
+    }
     int key = 0;
     if(sel < 0 || sel > M.opReturn)
     {
@@ -57,8 +61,16 @@ void ShowMenu(Menu M, int &sel, bool hasReturn)
         if(i != 0)
         {
             opt += '\n';
+
         }
-        opt += "     " + std::to_string(i+1) + ". " + M.options[i];
+        if(i == M.opReturn && separateReturn)
+        {
+            opt += "\n     0. " + M.options[i];
+        }
+        else
+        {
+            opt += "     " + std::to_string(i+1) + ". " + M.options[i];
+        }
     }
     Cell(opt, 50, "left", true, true, true, true, 3);
     std::cout << "    <UP>/<DOWN> : Navigate            <ENTER> : Select\n";
@@ -66,14 +78,28 @@ void ShowMenu(Menu M, int &sel, bool hasReturn)
 
     do
     {
-        CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+        if(sel == M.opReturn && separateReturn)
+        {
+            CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel + 1);
+        }
+        else
+        {
+            CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+        }
         std::cout << ">";
         CursorSetPos(cursorEndPos.X, cursorEndPos.Y);
         key = getch();
 
         if(key == KEY_UP)
         {
-            CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+            if(sel == M.opReturn && separateReturn)
+            {
+                CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel + 1);
+            }
+            else
+            {
+                CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+            }
             std::cout << " ";
             sel--;
             if(sel < 0)
@@ -84,7 +110,14 @@ void ShowMenu(Menu M, int &sel, bool hasReturn)
         }
         else if(key == KEY_DOWN)
         {
-            CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+            if(sel == M.opReturn && separateReturn)
+            {
+                CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel + 1);
+            }
+            else
+            {
+                CursorSetPos(cursorStartPos.X, cursorStartPos.Y + sel);
+            }
             std::cout << " ";
             sel++;
             if(sel > M.opReturn)
@@ -102,7 +135,7 @@ void ShowMessage(std::string info)
     M.options = {"Ok"};
     M.opReturn = 0;
     int sel = 0;
-    ShowMenu(M, sel);
+    ShowMenu(M, sel, false);
 }
 
 void InputField(Menu M, std::string &input)

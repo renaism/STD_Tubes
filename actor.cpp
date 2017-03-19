@@ -79,7 +79,6 @@ void InsertActor(ListActor &L, a_actor a)
         std::string aName = a->info.name;
         std::string bName = "";
         for (char &c: aName) c = std::toupper(c);
-        //boost::algorithm::to_upper(aName);
         a_actor b = NULL;
         a_actor bPrev = NULL;
         do
@@ -95,7 +94,6 @@ void InsertActor(ListActor &L, a_actor a)
             }
             bName = b->info.name;
             for (char &c: bName) c = std::toupper(c);
-            //boost::algorithm::to_upper(bName);
             if(aName > bName)
             {
                 bPrev = b;
@@ -159,8 +157,28 @@ std::vector<a_actor> GetAllActorAddress(ListActor L)
             aT.push_back(a);
             a = a->next;
         } while(a != L.first);
+    }
 
-        return aT;
+    return aT;
+}
+
+std::vector<a_actor> GetAllActorWithStr(ListActor L, std::string str)
+{
+    std::vector<a_actor> aT;
+    if(L.first != NULL)
+    {
+        for(char &c: str) c = std::toupper(c);
+        a_actor a = L.first;
+        do
+        {
+            std::string name = a->info.name;
+            for(char &c: name) c = std::toupper(c);
+            if(name.find(str) != std::string::npos)
+            {
+                aT.push_back(a);
+            }
+            a = a->next;
+        } while(a != L.first);
     }
 
     return aT;

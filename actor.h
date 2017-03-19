@@ -34,5 +34,6 @@ void InsertActor(ListActor &L, a_actor a);
 void DeleteActor(ListActor &L, a_actor a);
 
 std::vector<a_actor> GetAllActorAddress(ListActor L);
+std::vector<a_actor> GetAllActorWithStr(ListActor L, std::string str);
 
 #endif // ACTOR_H_INCLUDED

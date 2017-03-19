@@ -34,8 +34,12 @@ void DeallocateRelation(a_relation &a);
 void InsertRelation(ListRelation &L, a_relation a);
 void DeleteRelation(ListRelation &L, a_relation a);
 
+std::vector<a_relation> GetAllRelationAddress(ListRelation L);
 std::vector<a_relation> GetAllRelationWithActor(ListRelation L, a_actor aA);
 std::vector<a_relation> GetAllRelationWithFilm(ListRelation L, a_film aF);
+
+int TotalRelationOfActor(ListRelation L, a_actor aA);
+int TotalRelationOfFilm(ListRelation L, a_film aF);
 
 void DeleteAllRelationWithActor(ListRelation &L, a_actor aA);
 void DeleteAllRelationWithFilm(ListRelation &sL, a_film aF);
